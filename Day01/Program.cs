@@ -51,8 +51,7 @@ static void Part2()
     }
     list.Add(current);
 
-    var sorted = list.OrderByDescending(v => v).Take(3).ToArray();
-    var result = sorted[0] + sorted[1] + sorted[2];
+    var result = list.OrderByDescending(v => v).Take(3).Sum();
     Console.WriteLine($"Part 2: {result}");
 
     sw.Stop();
