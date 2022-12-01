@@ -11,14 +11,14 @@ static void Part1()
 
     foreach (var line in input)
     {
-        if (string.IsNullOrWhiteSpace(line))
+        if (!string.IsNullOrWhiteSpace(line))
         {
-            max = Math.Max(current, max);
-            current = 0;
+            current += int.Parse(line);
         }
         else
         {
-            current += int.Parse(line);
+            max = Math.Max(current, max);
+            current = 0;
         }
     }
     max = Math.Max(current, max);
@@ -39,14 +39,14 @@ static void Part2()
 
     foreach (var line in input)
     {
-        if (string.IsNullOrWhiteSpace(line))
+        if (!string.IsNullOrWhiteSpace(line))
         {
-            list.Add(current);
-            current = 0;
+            current += int.Parse(line);
         }
         else
         {
-            current += int.Parse(line);
+            list.Add(current);
+            current = 0;
         }
     }
     list.Add(current);
