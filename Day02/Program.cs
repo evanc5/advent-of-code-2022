@@ -6,11 +6,23 @@ static void Part1()
     var input = File.ReadAllLines(@".\input.txt");
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
-    var total = 0;
-    foreach (var line in input)
+    var ScoreLookup = new Dictionary<string, int>()
     {
-        var split = line.Split(' ');
-        total += RoundScoreV1(split[0], split[1]);
+        ["A X"] = 1 + 3,    //opponent rock self rock
+        ["A Y"] = 2 + 6,    //opponent rock self paper
+        ["A Z"] = 3 + 0,    //opponent rock self scissors
+        ["B X"] = 1 + 0,    //opponent paper self rock
+        ["B Y"] = 2 + 3,    //opponent paper self paper
+        ["B Z"] = 3 + 6,    //opponent paper self scissors
+        ["C X"] = 1 + 6,    //opponent scissors self rock
+        ["C Y"] = 2 + 0,    //opponent scissors self paper
+        ["C Z"] = 3 + 3     //opponent scissors self scissors
+    };
+
+    var total = 0;
+    foreach(var line in input)
+    {
+        total += ScoreLookup[line];
     }
     Console.WriteLine($"Part 1: {total}");
 
@@ -23,141 +35,26 @@ static void Part2()
     var input = File.ReadAllLines(@".\input.txt");
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
-    var total = 0;
-    foreach (var line in input)
+    var ScoreLookup = new Dictionary<string, int>()
     {
-        var split = line.Split(' ');
-        total += RoundScoreV2(split[0], split[1]);
+        ["A X"] = 0 + 3,    //opponent rock loss (self scissors)
+        ["A Y"] = 3 + 1,    //opponent rock draw (self rock)
+        ["A Z"] = 6 + 2,    //opponent rock win (self paper)
+        ["B X"] = 0 + 1,    //opponent paper loss (self rock)
+        ["B Y"] = 3 + 2,    //opponent paper draw (self paper)
+        ["B Z"] = 6 + 3,    //opponent paper win (self scissors)
+        ["C X"] = 0 + 2,    //opponent scissors loss (self paper)
+        ["C Y"] = 3 + 3,    //opponent scissors draw (self scissors)
+        ["C Z"] = 6 + 1     //opponent scissors win (self rock)
+    };
+
+    var total = 0;
+    foreach(var line in input)
+    {
+        total += ScoreLookup[line];
     }
     Console.WriteLine($"Part 2: {total}");
 
     sw.Stop();
     System.Diagnostics.Debug.WriteLine($"Part 2: {sw.Elapsed}");
-}
-
-static int RoundScoreV1(string opponent, string response)
-{
-    var result = RoundResult(opponent, response);
-
-    const string selfRock = "X";
-    const string selfPaper = "Y";
-    const string selfScissors = "Z";
-
-    switch (response)
-    {
-        case selfRock:
-            return result + 1;
-        case selfPaper:
-            return result + 2;
-        case selfScissors:
-            return result + 3;
-        default:
-            throw new ArgumentOutOfRangeException(response);
-    }
-}
-
-static int RoundScoreV2(string opponent, string result)
-{
-    const string opponentRock = "A";
-    const string opponentPaper = "B";
-    const string opponentScissors = "C";
-
-    const string loss = "X";
-    const string draw = "Y";
-    const string win = "Z";
-
-    switch (opponent)
-    {
-        case opponentRock:
-            switch (result)
-            {
-                case win:
-                    return 6 + 2;
-                case draw:
-                    return 3 + 1;
-                case loss:
-                    return 0 + 3;
-                default:
-                    throw new ArgumentOutOfRangeException(result);
-            }
-        case opponentPaper:
-            switch (result)
-            {
-                case win:
-                    return 6 + 3;
-                case draw:
-                    return 3 + 2;
-                case loss:
-                    return 0 + 1;
-                default:
-                    throw new ArgumentOutOfRangeException(result);
-            }
-        case opponentScissors:
-            switch (result)
-            {
-                case win:
-                    return 6 + 1;
-                case draw:
-                    return 3 + 3;
-                case loss:
-                    return 0 + 2;
-                default:
-                    throw new ArgumentOutOfRangeException(result);
-            }
-        default:
-            throw new ArgumentOutOfRangeException(opponent);
-    }
-}
-
-static int RoundResult(string opponent, string response)
-{
-    const string opponentRock = "A";
-    const string opponentPaper = "B";
-    const string opponentScissors = "C";
-
-    const string selfRock = "X";
-    const string selfPaper = "Y";
-    const string selfScissors = "Z";
-
-    switch (opponent)
-    {
-        case opponentRock:
-            switch (response)
-            {
-                case selfRock:
-                    return 3;
-                case selfPaper:
-                    return 6;
-                case selfScissors:
-                    return 0;
-                default:
-                    throw new ArgumentOutOfRangeException(response);
-            }
-        case opponentPaper:
-            switch (response)
-            {
-                case selfRock:
-                    return 0;
-                case selfPaper:
-                    return 3;
-                case selfScissors:
-                    return 6;
-                default:
-                    throw new ArgumentOutOfRangeException(response);
-            }
-        case opponentScissors:
-            switch (response)
-            {
-                case selfRock:
-                    return 6;
-                case selfPaper:
-                    return 0;
-                case selfScissors:
-                    return 3;
-                default:
-                    throw new ArgumentOutOfRangeException(response);
-            }
-        default:
-            throw new ArgumentOutOfRangeException(opponent);
-    }
 }
