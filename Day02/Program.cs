@@ -20,7 +20,7 @@ static void Part1()
     };
 
     var total = 0;
-    foreach(var line in input)
+    foreach (var line in input)
     {
         total += ScoreLookup[line];
     }
@@ -49,7 +49,7 @@ static void Part2()
     };
 
     var total = 0;
-    foreach(var line in input)
+    foreach (var line in input)
     {
         total += ScoreLookup[line];
     }
