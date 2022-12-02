@@ -8,15 +8,15 @@ static void Part1()
 
     var ScoreLookup = new Dictionary<string, int>()
     {
-        ["A X"] = 1 + 3,    //opponent rock self rock
-        ["A Y"] = 2 + 6,    //opponent rock self paper
-        ["A Z"] = 3 + 0,    //opponent rock self scissors
-        ["B X"] = 1 + 0,    //opponent paper self rock
-        ["B Y"] = 2 + 3,    //opponent paper self paper
-        ["B Z"] = 3 + 6,    //opponent paper self scissors
-        ["C X"] = 1 + 6,    //opponent scissors self rock
-        ["C Y"] = 2 + 0,    //opponent scissors self paper
-        ["C Z"] = 3 + 3     //opponent scissors self scissors
+        ["A X"] = 1 + 3,    //opponent rock v self rock (draw)
+        ["A Y"] = 2 + 6,    //opponent rock v self paper (win)
+        ["A Z"] = 3 + 0,    //opponent rock v self scissors (loss)
+        ["B X"] = 1 + 0,    //opponent paper v self rock (loss)
+        ["B Y"] = 2 + 3,    //opponent paper v self paper (draw)
+        ["B Z"] = 3 + 6,    //opponent paper v self scissors (win)
+        ["C X"] = 1 + 6,    //opponent scissors v self rock (win)
+        ["C Y"] = 2 + 0,    //opponent scissors v self paper (loss)
+        ["C Z"] = 3 + 3     //opponent scissors v self scissors (draw)
     };
 
     var total = 0;
