@@ -1,4 +1,4 @@
-Part1();
+﻿Part1();
 Part2();
 
 static void Part1()
