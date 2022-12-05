@@ -128,13 +128,11 @@ public static class StackExtensions
 {
     public static IEnumerable<T> GrabTop<T>(this Stack<T> stack, int count)
     {
-        var result = new List<T>();
-        while (count > 0)
+        var result = new T[count];
+        for (int i = 0; i < count; i++)
         {
-            result.Add(stack.Pop());
-            count--;
+            result[i] = stack.Pop();
         }
-        result.Reverse();
-        return result;
+        return result.Reverse();
     }
 }
