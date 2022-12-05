@@ -17,7 +17,7 @@ static void Part1()
     // }
     foreach (var line in moves)
     {
-        cargo.ProcessMove(line);
+        cargo.ProcessMove1(line);
     }
 
     Console.WriteLine($"Part 1: {cargo.GetTops()}");
@@ -31,12 +31,21 @@ static void Part2()
     var input = File.ReadAllLines(@".\input.txt");
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
-    var result = 0;
-    foreach (var line in input)
-    {
+    // var board = input.Take(8);
+    var moves = input.TakeLast(501);
+    var cargo = new Cargo();
 
+    // foreach (var line in board)
+    // {
+    //     //build board object
+    //     //idk how to do this actually so let's just do this manually for now I guess
+    // }
+    foreach (var line in moves)
+    {
+        cargo.ProcessMove2(line);
     }
-    Console.WriteLine($"Part 2: {result}");
+
+    Console.WriteLine($"Part 1: {cargo.GetTops()}");
 
     sw.Stop();
     System.Diagnostics.Debug.WriteLine($"Part 2: {sw.Elapsed}");
@@ -130,22 +139,41 @@ public class Cargo
         Stacks[8].Push('C');
     }
 
-    public void ProcessMove(string move)
+    public void ProcessMove1(string move)
     {
         var split = move.Split(' ');
         var count = int.Parse(split[1]);
         var from = int.Parse(split[3]) - 1;
         var to = int.Parse(split[5]) - 1;
 
-        ProcessMove(count, from, to);
+        ProcessMove1(count, from, to);
     }
 
-    public void ProcessMove(int count, int from, int to)
+    public void ProcessMove1(int count, int from, int to)
     {
         while (count > 0)
         {
             Stacks[to].Push(Stacks[from].Pop());
             count--;
+        }
+    }
+
+    public void ProcessMove2(string move)
+    {
+        var split = move.Split(' ');
+        var count = int.Parse(split[1]);
+        var from = int.Parse(split[3]) - 1;
+        var to = int.Parse(split[5]) - 1;
+
+        ProcessMove2(count, from, to);
+    }
+
+    public void ProcessMove2(int count, int from, int to)
+    {
+        var top = Stacks[from].GrabTop(count);
+        foreach (var item in top)
+        {
+            Stacks[to].Push(item);
         }
     }
 
@@ -156,6 +184,21 @@ public class Cargo
         {
             result += stack.Peek();
         }
+        return result;
+    }
+}
+
+public static class StackExtensions
+{
+    public static List<T> GrabTop<T>(this Stack<T> stack, int count)
+    {
+        var result = new List<T>();
+        while (count > 0)
+        {
+            result.Add(stack.Pop());
+            count--;
+        }
+        result.Reverse();
         return result;
     }
 }
