@@ -61,18 +61,17 @@ public class Cargo
 
     public Cargo(IEnumerable<string> board) : this()
     {
-        var reversed = board.Reverse();
         int[] columns = { 1, 5, 9, 13, 17, 21, 25, 29, 33 };
-        foreach (var row in reversed)
+        foreach (var row in board.Reverse())
         {
-            var currentStack = 0;
-            foreach (var i in columns)
+            for (int i = 0; i < columns.Length; i++)
             {
-                if (char.IsLetter(row[i]))
+                var column = columns[i];
+                var entry = row[column];
+                if (char.IsLetter(entry))
                 {
-                    Stacks[currentStack].Push(row[i]);
+                    Stacks[i].Push(entry);
                 }
-                currentStack++;
             }
         }
     }
