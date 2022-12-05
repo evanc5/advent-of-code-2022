@@ -57,5 +57,8 @@ static bool Overlaps(string elf1, string elf2)
     if (range1[0] <= range2[0] && range1[1] >= range2[0]) return true;
     if (range2[0] <= range1[0] && range2[1] >= range1[0]) return true;
 
+    if (range1[1] >= range2[1] && range1[1] <= range2[0]) return true;
+    if (range2[1] >= range1[1] && range2[1] <= range1[0]) return true;
+
     return false;
 }
