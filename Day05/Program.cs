@@ -126,7 +126,7 @@ public class Cargo
 
 public static class StackExtensions
 {
-    public static List<T> GrabTop<T>(this Stack<T> stack, int count)
+    public static IEnumerable<T> GrabTop<T>(this Stack<T> stack, int count)
     {
         var result = new List<T>();
         while (count > 0)
