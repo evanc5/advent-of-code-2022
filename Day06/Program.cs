@@ -29,7 +29,7 @@ static int FindMarker(string input, int count)
 {
     for (int i = count - 1; i < input.Length; i++)
     {
-        var lastN = input.Substring(i - count - 1, count);
+        var lastN = input.Substring(i - (count - 1), count);
         if (lastN.Distinct().Count() == count)
         {
             return i + 1;
