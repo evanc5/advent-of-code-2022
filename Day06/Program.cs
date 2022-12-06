@@ -6,16 +6,7 @@ static void Part1()
     var input = File.ReadAllText(@".\input.txt");
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
-    var result = 0;
-    for (int i = 3; i < input.Length; i++)
-    {
-        var lastFour = input.Substring(i - 3, 4);
-        if (lastFour.Distinct().Count() == 4)
-        {
-            result = i + 1;
-            break;
-        }
-    }
+    var result = FindMarker(input, 4);
     Console.WriteLine($"Part 1: {result}");
 
     sw.Stop();
@@ -27,18 +18,21 @@ static void Part2()
     var input = File.ReadAllText(@".\input.txt");
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
-    var result = 0;
-    for (int i = 13; i < input.Length; i++)
-    {
-        var lastFourteen = input.Substring(i - 13, 14);
-        if (lastFourteen.Distinct().Count() == 14)
-        {
-            result = i + 1;
-            break;
-        }
-    }
+    var result = FindMarker(input, 14);
     Console.WriteLine($"Part 2: {result}");
 
     sw.Stop();
     System.Diagnostics.Debug.WriteLine($"Part 2: {sw.Elapsed}");
+}
+
+static int FindMarker(string input, int count)
+{
+    for (int i = count - 1; i < input.Length; i++)
+    {
+        var lastN = input.Substring(i - count - 1, count);
+        if (lastN.Distinct().Count() == count)
+        {
+            return i + 1;
+        }
+    }
 }
