@@ -66,6 +66,17 @@
             "cwd": "${workspaceFolder}/Day06",
             "console": "internalConsole",
             "stopAtEntry": false
+        },
+        {
+            "name": "Day 07",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build07",
+            "program": "${workspaceFolder}/Day07/bin/Debug/net7.0/Day07.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Day07",
+            "console": "internalConsole",
+            "stopAtEntry": false
         }
     ]
 }
