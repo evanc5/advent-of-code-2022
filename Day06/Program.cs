@@ -35,4 +35,5 @@ static int FindMarker(string input, int count)
             return i + 1;
         }
     }
+    return -1;
 }
