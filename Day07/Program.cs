@@ -97,9 +97,9 @@ class FileSystem
     }
 }
 
-record class Directory(string Path, Dictionary<string, int> Files, List<Directory> Subdirectories, Directory? Parent)
+record class Directory(string Path, Directory? Parent, Dictionary<string, int> Files, List<Directory> Subdirectories)
 {
-    public Directory(string path, Directory? parent = null) : this(path, new Dictionary<string, int>(), new List<Directory>(), parent)
+    public Directory(string path, Directory? parent = null) : this(path, parent, new Dictionary<string, int>(), new List<Directory>())
     {
     }
 
