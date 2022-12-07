@@ -59,6 +59,7 @@ static FileSystem BuildFileSystem(IEnumerable<string> input)
 class FileSystem
 {
     public List<Directory> FlatDirectories { get; }
+
     public Directory CurrentDirectory { get; private set; }
     public Dictionary<string, int> CurrentFiles => CurrentDirectory.Files;
     public List<Directory> CurrentSubdirectories => CurrentDirectory.Subdirectories;
@@ -96,13 +97,8 @@ class FileSystem
     }
 }
 
-class Directory
+record class Directory(string Path, Dictionary<string, int> Files, List<Directory> Subdirectories, Directory? Parent)
 {
-    public string Path { get; }
-    public Dictionary<string, int> Files { get; }
-    public List<Directory> Subdirectories { get; }
-    public Directory? Parent { get; }
-
     public int Size
     {
         get
@@ -120,11 +116,8 @@ class Directory
         }
     }
 
-    public Directory(string path)
+    public Directory(string path) : this(path, new Dictionary<string, int>(), new List<Directory>(), null)
     {
-        Path = path;
-        Files = new Dictionary<string, int>();
-        Subdirectories = new List<Directory>();
     }
 
     public Directory(string path, Directory parent) : this(path)
