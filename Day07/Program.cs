@@ -38,10 +38,7 @@ static FileSystem BuildFileSystem(IEnumerable<string> input)
         switch (split[0])
         {
             case "$":
-                if (split[1] == "cd")
-                {
-                    fileSystem.cd(split[2]);
-                }
+                if (split[1] == "cd") fileSystem.cd(split[2]);
                 break;
             case "dir":
                 var newSubdirectory = new Directory(split[1], fileSystem.CurrentDirectory);
