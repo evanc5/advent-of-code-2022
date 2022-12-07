@@ -97,26 +97,9 @@ class FileSystem
     }
 }
 
-record class Directory(string Path, Directory? Parent, Dictionary<string, int> Files, List<Directory> Subdirectories)
+record class Directory(string Path, Directory? Parent = null)
 {
-    public Directory(string path, Directory? parent = null) : this(path, parent, new Dictionary<string, int>(), new List<Directory>())
-    {
-    }
-
-    public int Size
-    {
-        get
-        {
-            var result = 0;
-            foreach (var fileSize in Files.Values)
-            {
-                result += fileSize;
-            }
-            foreach (var subdirectory in Subdirectories)
-            {
-                result += subdirectory.Size;
-            }
-            return result;
-        }
-    }
+    public Dictionary<string, int> Files { get; } = new Dictionary<string, int>();
+    public List<Directory> Subdirectories { get; } = new List<Directory>();
+    public int Size => Files.Values.Sum() + Subdirectories.Sum(d => d.Size);
 }
