@@ -58,6 +58,7 @@ static FileSystem BuildFileSystem(IEnumerable<string> input)
 
 class FileSystem
 {
+    public List<Directory> FlatDirectories { get; }
     public Directory CurrentDirectory { get; private set; }
     public Dictionary<string, int> CurrentFiles => CurrentDirectory.Files;
     public List<Directory> CurrentSubdirectories => CurrentDirectory.Subdirectories;
@@ -69,8 +70,6 @@ class FileSystem
     public int UsedSpace => FlatDirectories[0].Size;
     public int AvailableSpace => TotalSpace - UsedSpace;
     public int SpaceToFree => RequiredSpace - AvailableSpace;
-
-    public List<Directory> FlatDirectories { get; }
 
     public FileSystem()
     {
