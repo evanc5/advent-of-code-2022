@@ -99,6 +99,10 @@ class FileSystem
 
 record class Directory(string Path, Dictionary<string, int> Files, List<Directory> Subdirectories, Directory? Parent)
 {
+    public Directory(string path, Directory? parent = null) : this(path, new Dictionary<string, int>(), new List<Directory>(), parent)
+    {
+    }
+
     public int Size
     {
         get
@@ -114,14 +118,5 @@ record class Directory(string Path, Dictionary<string, int> Files, List<Director
             }
             return result;
         }
-    }
-
-    public Directory(string path) : this(path, new Dictionary<string, int>(), new List<Directory>(), null)
-    {
-    }
-
-    public Directory(string path, Directory parent) : this(path)
-    {
-        Parent = parent;
     }
 }
