@@ -6,9 +6,8 @@ static void Part1()
     var input = File.ReadAllLines(@".\input.txt").Skip(1);
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
-    var result = 0;
     var fileSystem = BuildFileSystem(input);
-    result = fileSystem.FlatDirectories.Where(d => d.Size <= 100000).Sum(d => d.Size);
+    var result = fileSystem.FlatDirectories.Where(d => d.Size <= 100000).Sum(d => d.Size);
     Console.WriteLine($"Part 1: {result}");
 
     sw.Stop();
@@ -20,9 +19,8 @@ static void Part2()
     var input = File.ReadAllLines(@".\input.txt").Skip(1);
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
-    var result = 0;
     var fileSystem = BuildFileSystem(input);
-    result = fileSystem.FlatDirectories.Where(d => d.Size >= fileSystem.SpaceToFree).Min(d => d.Size);
+    var result = fileSystem.FlatDirectories.Where(d => d.Size >= fileSystem.SpaceToFree).Min(d => d.Size);
     Console.WriteLine($"Part 2: {result}");
 
     sw.Stop();
@@ -79,8 +77,7 @@ class FileSystem
     {
         if (path == "..")
         {
-            if (ParentDirectory == null) throw new NullReferenceException(nameof(ParentDirectory));
-            CurrentDirectory = ParentDirectory;
+            CurrentDirectory = ParentDirectory ?? CurrentDirectory;
         }
         else if (CurrentSubdirectoryNames.Contains(path))
         {
