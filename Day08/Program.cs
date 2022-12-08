@@ -7,7 +7,7 @@ static void Part1()
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
     var result = 0;
-    var forest = ForestExtensions.BuildForest(input.ToArray());
+    var forest = ForestExtensions.BuildForest(input);
     for (int x = 0; x < input.Count(); x++)
     {
         for (int y = 0; y < input[x].Length; y++)
@@ -27,7 +27,7 @@ static void Part2()
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
     var result = int.MinValue;
-    var forest = ForestExtensions.BuildForest(input.ToArray());
+    var forest = ForestExtensions.BuildForest(input);
     for (int x = 0; x < input.Count(); x++)
     {
         for (int y = 0; y < input[x].Length; y++)
