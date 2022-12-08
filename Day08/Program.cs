@@ -46,97 +46,12 @@ public class Forest
         }
     }
 
-    public bool IsVisible(int x, int y)
-    {
-        if (x >= RightEdge || x == 0 || y >= BottomEdge || y == 0) return true;
-        return UpVisible(x, y) || DownVisible(x, y) || LeftVisible(x, y) || RightVisible(x, y);
-    }
-
-    private bool RightVisible(int x, int y)
-    {
-        for (int i = x + 1; i < RightEdge; i++)
-        {
-            if (Grid[i, y] >= Grid[x, y])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private bool LeftVisible(int x, int y)
-    {
-        for (int i = x - 1; i >= 0; i--)
-        {
-            if (Grid[i, y] >= Grid[x, y])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private bool DownVisible(int x, int y)
-    {
-        for (int i = y + 1; i < BottomEdge; i++)
-        {
-            if (Grid[x, i] >= Grid[x, y])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private bool UpVisible(int x, int y)
-    {
-        for (int i = y - 1; i >= 0; i--)
-        {
-            if (Grid[x, i] >= Grid[x, y])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public int ScenicScore(int x, int y)
-    {
-        if (x >= RightEdge || x == 0 || y >= BottomEdge || y == 0) return 0;
-
-        var upVisible = 0;
-        for (int i = y - 1; i >= 0; i--)
-        {
-            upVisible++;
-            if (Grid[x, i] >= Grid[x, y]) break;
-        }
-        var downVisible = 0;
-        for (int i = y + 1; i < BottomEdge; i++)
-        {
-            downVisible++;
-            if (Grid[x, i] >= Grid[x, y]) break;
-        }
-        var leftVisible = 0;
-        for (int i = x - 1; i >= 0; i--)
-        {
-            leftVisible++;
-            if (Grid[i, y] >= Grid[x, y]) break;
-        }
-        var rightVisible = 0;
-        for (int i = x + 1; i < RightEdge; i++)
-        {
-            rightVisible++;
-            if (Grid[i, y] >= Grid[x, y]) break;
-        }
-        return upVisible * downVisible * leftVisible * rightVisible;
-    }
-
     public int VisibleTreeCount()
     {
         var result = 0;
-        for (int x = 0; x < Grid.GetLength(0); x++)
+        for (int x = 0; x < RightEdge; x++)
         {
-            for (int y = 0; y < Grid.GetLength(1); y++)
+            for (int y = 0; y < BottomEdge; y++)
             {
                 if (IsVisible(x, y)) result++;
             }
@@ -147,13 +62,104 @@ public class Forest
     public int GetBestScenicScore()
     {
         var result = int.MinValue;
-        for (int x = 0; x < Grid.GetLength(0); x++)
+        for (int x = 0; x < RightEdge; x++)
         {
-            for (int y = 0; y < Grid.GetLength(1); y++)
+            for (int y = 0; y < BottomEdge; y++)
             {
                 result = Math.Max(result, ScenicScore(x, y));
             }
         }
         return result;
+    }
+
+    private bool IsVisible(int x, int y)
+    {
+        if (OnEdge(x, y)) return true;
+        return UpVisible(x, y) || DownVisible(x, y) || LeftVisible(x, y) || RightVisible(x, y);
+    }
+
+    private int ScenicScore(int x, int y)
+    {
+        if (OnEdge(x, y)) return 0;
+        return UpScore(x, y) * DownScore(x, y) * LeftScore(x, y) * RightScore(x, y);
+    }
+
+    private bool OnEdge(int x, int y)
+    {
+        return x >= RightEdge || x == 0 || y >= BottomEdge || y == 0;
+    }
+
+    private bool UpVisible(int x, int y)
+    {
+        for (int i = y - 1; i >= 0; i--)
+        {
+            if (Grid[x, i] >= Grid[x, y]) return false;
+        }
+        return true;
+    }
+    private bool DownVisible(int x, int y)
+    {
+        for (int i = y + 1; i < BottomEdge; i++)
+        {
+            if (Grid[x, i] >= Grid[x, y]) return false;
+        }
+        return true;
+    }
+    private bool LeftVisible(int x, int y)
+    {
+        for (int i = x - 1; i >= 0; i--)
+        {
+            if (Grid[i, y] >= Grid[x, y]) return false;
+        }
+        return true;
+    }
+    private bool RightVisible(int x, int y)
+    {
+        for (int i = x + 1; i < RightEdge; i++)
+        {
+            if (Grid[i, y] >= Grid[x, y]) return false;
+        }
+        return true;
+    }
+
+    private int UpScore(int x, int y)
+    {
+        var score = 0;
+        for (int i = y - 1; i >= 0; i--)
+        {
+            score++;
+            if (Grid[x, i] >= Grid[x, y]) return score;
+        }
+        return score;
+    }
+    private int DownScore(int x, int y)
+    {
+        var score = 0;
+        for (int i = y + 1; i < BottomEdge; i++)
+        {
+            score++;
+            if (Grid[x, i] >= Grid[x, y]) return score;
+        }
+        return score;
+    }
+    private int LeftScore(int x, int y)
+    {
+        var score = 0;
+        for (int i = x - 1; i >= 0; i--)
+        {
+            score++;
+            if (Grid[i, y] >= Grid[x, y]) return score;
+        }
+        return score;
+    }
+    private int RightScore(int x, int y)
+    {
+        var score = 0;
+        for (int i = x + 1; i < RightEdge; i++)
+        {
+            score++;
+            if (Grid[i, y] >= Grid[x, y]) return score;
+        }
+        return score;
     }
 }
