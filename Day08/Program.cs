@@ -6,15 +6,8 @@ static void Part1()
     var input = File.ReadAllLines(@".\input.txt");
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
-    var result = 0;
-    var forest = ForestExtensions.BuildForest(input);
-    for (int x = 0; x < forest.GetLength(0); x++)
-    {
-        for (int y = 0; y < forest.GetLength(1); y++)
-        {
-            if (forest.IsVisible(x, y)) result++;
-        }
-    }
+    var forest = new Forest(input);
+    var result = forest.VisibleTreeCount();
     Console.WriteLine($"Part 1: {result}");
 
     sw.Stop();
@@ -26,113 +19,141 @@ static void Part2()
     var input = File.ReadAllLines(@".\input.txt");
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
-    var result = int.MinValue;
-    var forest = ForestExtensions.BuildForest(input);
-    for (int x = 0; x < forest.GetLength(0); x++)
-    {
-        for (int y = 0; y < forest.GetLength(1); y++)
-        {
-            result = Math.Max(result, forest.ScenicScore(x, y));
-        }
-    }
+    var forest = new Forest(input);
+    var result = forest.GetBestScenicScore();
     Console.WriteLine($"Part 2: {result}");
 
     sw.Stop();
     System.Diagnostics.Debug.WriteLine($"Part 2: {sw.Elapsed}");
 }
 
-public static class ForestExtensions
+public class Forest
 {
-    public static int[,] BuildForest(string[] input)
+    public int[,] Grid { get; }
+
+    public int RightEdge => Grid.GetLength(0);
+    public int BottomEdge => Grid.GetLength(1);
+
+    public Forest(string[] input)
     {
-        var forest = new int[input[0].Count(), input.Count()];
+        Grid = new int[input[0].Count(), input.Count()];
         for (int i = 0; i < input.Count(); i++)
         {
             for (int j = 0; j < input[i].Length; j++)
             {
-                forest[i, j] = int.Parse(input[i][j].ToString());
+                Grid[i, j] = int.Parse(input[i][j].ToString());
             }
         }
-        return forest;
     }
 
-    public static bool IsVisible(this int[,] forest, int x, int y)
+    public bool IsVisible(int x, int y)
     {
-        var rightEdge = forest.GetLength(0);
-        var bottomEdge = forest.GetLength(1);
+        if (x >= RightEdge || x == 0 || y >= BottomEdge || y == 0) return true;
+        return UpVisible(x, y) || DownVisible(x, y) || LeftVisible(x, y) || RightVisible(x, y);
+    }
 
-        if (x >= rightEdge || x == 0 || y >= bottomEdge || y == 0) return true;
-
-        var upVisible = true;
-        for (int i = y - 1; i >= 0; i--)
+    private bool RightVisible(int x, int y)
+    {
+        for (int i = x + 1; i < RightEdge; i++)
         {
-            if (forest[x, i] >= forest[x, y])
+            if (Grid[i, y] >= Grid[x, y])
             {
-                upVisible = false;
-                break;
+                return false;
             }
         }
-        var downVisible = true;
-        for (int i = y + 1; i < bottomEdge; i++)
-        {
-            if (forest[x, i] >= forest[x, y])
-            {
-                downVisible = false;
-                break;
-            }
-        }
-        var leftVisible = true;
+        return true;
+    }
+
+    private bool LeftVisible(int x, int y)
+    {
         for (int i = x - 1; i >= 0; i--)
         {
-            if (forest[i, y] >= forest[x, y])
+            if (Grid[i, y] >= Grid[x, y])
             {
-                leftVisible = false;
-                break;
+                return false;
             }
         }
-        var rightVisible = true;
-        for (int i = x + 1; i < rightEdge; i++)
-        {
-            if (forest[i, y] >= forest[x, y])
-            {
-                rightVisible = false;
-                break;
-            }
-        }
-        return upVisible || downVisible || leftVisible || rightVisible;
+        return true;
     }
 
-    public static int ScenicScore(this int[,] forest, int x, int y)
+    private bool DownVisible(int x, int y)
     {
-        var rightEdge = forest.GetLength(0);
-        var bottomEdge = forest.GetLength(1);
+        for (int i = y + 1; i < BottomEdge; i++)
+        {
+            if (Grid[x, i] >= Grid[x, y])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
-        if (x >= rightEdge || x == 0 || y >= bottomEdge || y == 0) return 0;
+    private bool UpVisible(int x, int y)
+    {
+        for (int i = y - 1; i >= 0; i--)
+        {
+            if (Grid[x, i] >= Grid[x, y])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int ScenicScore(int x, int y)
+    {
+        if (x >= RightEdge || x == 0 || y >= BottomEdge || y == 0) return 0;
 
         var upVisible = 0;
         for (int i = y - 1; i >= 0; i--)
         {
             upVisible++;
-            if (forest[x, i] >= forest[x, y]) break;
+            if (Grid[x, i] >= Grid[x, y]) break;
         }
         var downVisible = 0;
-        for (int i = y + 1; i < bottomEdge; i++)
+        for (int i = y + 1; i < BottomEdge; i++)
         {
             downVisible++;
-            if (forest[x, i] >= forest[x, y]) break;
+            if (Grid[x, i] >= Grid[x, y]) break;
         }
         var leftVisible = 0;
         for (int i = x - 1; i >= 0; i--)
         {
             leftVisible++;
-            if (forest[i, y] >= forest[x, y]) break;
+            if (Grid[i, y] >= Grid[x, y]) break;
         }
         var rightVisible = 0;
-        for (int i = x + 1; i < rightEdge; i++)
+        for (int i = x + 1; i < RightEdge; i++)
         {
             rightVisible++;
-            if (forest[i, y] >= forest[x, y]) break;
+            if (Grid[i, y] >= Grid[x, y]) break;
         }
         return upVisible * downVisible * leftVisible * rightVisible;
+    }
+
+    public int VisibleTreeCount()
+    {
+        var result = 0;
+        for (int x = 0; x < Grid.GetLength(0); x++)
+        {
+            for (int y = 0; y < Grid.GetLength(1); y++)
+            {
+                if (IsVisible(x, y)) result++;
+            }
+        }
+        return result;
+    }
+
+    public int GetBestScenicScore()
+    {
+        var result = int.MinValue;
+        for (int x = 0; x < Grid.GetLength(0); x++)
+        {
+            for (int y = 0; y < Grid.GetLength(1); y++)
+            {
+                result = Math.Max(result, ScenicScore(x, y));
+            }
+        }
+        return result;
     }
 }
