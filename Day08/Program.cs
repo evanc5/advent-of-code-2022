@@ -61,10 +61,10 @@ public class Forest
 
     public int GetBestScenicScore()
     {
-        var result = int.MinValue;
-        for (int x = 0; x < RightEdge; x++)
+        var result = 0;
+        for (int x = 1; x < RightEdge - 1; x++)
         {
-            for (int y = 0; y < BottomEdge; y++)
+            for (int y = 1; y < BottomEdge - 1; y++)
             {
                 result = Math.Max(result, ScenicScore(x, y));
             }
