@@ -8,9 +8,9 @@ static void Part1()
 
     var result = 0;
     var forest = ForestExtensions.BuildForest(input);
-    for (int x = 0; x < input.Count(); x++)
+    for (int x = 0; x < forest.GetLength(0); x++)
     {
-        for (int y = 0; y < input[x].Length; y++)
+        for (int y = 0; y < forest.GetLength(1); y++)
         {
             if (forest.IsVisible(x, y)) result++;
         }
@@ -28,9 +28,9 @@ static void Part2()
 
     var result = int.MinValue;
     var forest = ForestExtensions.BuildForest(input);
-    for (int x = 0; x < input.Count(); x++)
+    for (int x = 0; x < forest.GetLength(0); x++)
     {
-        for (int y = 0; y < input[x].Length; y++)
+        for (int y = 0; y < forest.GetLength(1); y++)
         {
             result = Math.Max(result, forest.ScenicScore(x, y));
         }
