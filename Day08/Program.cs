@@ -27,9 +27,13 @@ static void Part2()
     var sw = System.Diagnostics.Stopwatch.StartNew();
 
     var result = 0;
-    foreach (var line in input)
+    var forest = BuildForest(input.ToArray());
+    for (int x = 0; x < input.Count(); x++)
     {
-
+        for (int y = 0; y < input[x].Length; y++)
+        {
+            result = Math.Max(result, ScenicScore(forest, x, y));
+        }
     }
     Console.WriteLine($"Part 2: {result}");
 
@@ -96,4 +100,51 @@ static bool IsVisible(int[,] forest, int x, int y)
     }
 
     return upVisible || downVisible || leftVisible || rightVisible;
+}
+
+static int ScenicScore(int[,] forest, int x, int y)
+{
+    var rightEdge = forest.GetLength(0);
+    var bottomEdge = forest.GetLength(1);
+
+    if (x >= rightEdge || x == 0 || y >= bottomEdge || y == 0) return 0;
+
+    var upVisible = 0;
+    for (int i = y - 1; i >= 0; i--)
+    {
+        upVisible++;
+        if (forest[x, i] >= forest[x, y])
+        {
+            break;
+        }
+    }
+    var downVisible = 0;
+    for (int i = y + 1; i < bottomEdge; i++)
+    {
+        downVisible++;
+        if (forest[x, i] >= forest[x, y])
+        {
+            break;
+        }
+    }
+
+    var leftVisible = 0;
+    for (int i = x - 1; i >= 0; i--)
+    {
+        leftVisible++;
+        if (forest[i, y] >= forest[x, y])
+        {
+            break;
+        }
+    }
+    var rightVisible = 0;
+    for (int i = x + 1; i < rightEdge; i++)
+    {
+        rightVisible++;
+        if (forest[i, y] >= forest[x, y])
+        {
+            break;
+        }
+    }
+    return upVisible * downVisible * leftVisible * rightVisible;
 }
