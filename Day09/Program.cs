@@ -78,6 +78,8 @@ public class Rope
         var dx = Head.x - Tail.x;
         var dy = Head.y - Tail.y;
 
+        if (Math.Abs(dx) < 2 && Math.Abs(dy) < 2) return;
+
         if (dy == 0 && dx >= 2)
         {
             Tail = new Point<int>(Tail.x + dx - 1, Tail.y);
