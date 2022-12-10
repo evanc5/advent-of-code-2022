@@ -78,24 +78,12 @@ public class Rope
         var dx = Head.x - Tail.x;
         var dy = Head.y - Tail.y;
 
+        var xDirection = Math.Sign(dx);
+        var yDirection = Math.Sign(dy);
+
         if (Math.Abs(dx) < 2 && Math.Abs(dy) < 2) return;
 
-        if (dy == 0 && dx >= 2)
-        {
-            Tail = new Point<int>(Tail.x + dx - 1, Tail.y);
-        }
-        else if (dy == 0 && dx <= 2)
-        {
-            Tail = new Point<int>(Tail.x + dx + 1, Tail.y);
-        }
-        else if (dx == 0 && dy >= 2)
-        {
-            Tail = new Point<int>(Tail.x, Tail.y + dy - 1);
-        }
-        else if (dx == 0 && dy <= 2)
-        {
-            Tail = new Point<int>(Tail.x, Tail.y + dy + 1);
-        }
+        //determine where Tail needs to move
     }
 }
 
