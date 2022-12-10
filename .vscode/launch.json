@@ -99,6 +99,39 @@
             "cwd": "${workspaceFolder}/Day09",
             "console": "internalConsole",
             "stopAtEntry": false
+        },
+        {
+            "name": "Day 10",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build10",
+            "program": "${workspaceFolder}/Day10/bin/Debug/net7.0/Day10.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Day10",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Day 11",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build11",
+            "program": "${workspaceFolder}/Day11/bin/Debug/net7.0/Day11.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Day11",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Day 12",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build12",
+            "program": "${workspaceFolder}/Day12/bin/Debug/net7.0/Day12.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Day12",
+            "console": "internalConsole",
+            "stopAtEntry": false
         }
     ]
 }
