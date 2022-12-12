@@ -4,7 +4,7 @@ Part2();
 static void Part1()
 {
     var input = File.ReadAllLines(@".\input.txt");
-    var sw = System.Diagnostics.Stopwatch.StartNew();
+    var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
     var board = input.Take(8);
     var moves = input.TakeLast(501);
@@ -15,16 +15,15 @@ static void Part1()
         cargo.ProcessMove(line, 1);
     }
 
+    var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
     Console.WriteLine($"Part 1: {cargo.GetTops()}");
-
-    sw.Stop();
-    System.Diagnostics.Debug.WriteLine($"Part 1: {sw.Elapsed}");
+    System.Diagnostics.Debug.WriteLine($"Part 1: {elapsedTime}");
 }
 
 static void Part2()
 {
     var input = File.ReadAllLines(@".\input.txt");
-    var sw = System.Diagnostics.Stopwatch.StartNew();
+    var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
     var board = input.Take(8);
     var moves = input.TakeLast(501);
@@ -35,10 +34,9 @@ static void Part2()
         cargo.ProcessMove(line, 2);
     }
 
+    var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
     Console.WriteLine($"Part 2: {cargo.GetTops()}");
-
-    sw.Stop();
-    System.Diagnostics.Debug.WriteLine($"Part 2: {sw.Elapsed}");
+    System.Diagnostics.Debug.WriteLine($"Part 2: {elapsedTime}");
 }
 
 public class Cargo

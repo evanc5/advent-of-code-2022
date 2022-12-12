@@ -4,7 +4,7 @@ Part2();
 static void Part1()
 {
     var input = File.ReadAllLines(@".\input.txt");
-    var sw = System.Diagnostics.Stopwatch.StartNew();
+    var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
     var ScoreLookup = new Dictionary<string, int>()
     {
@@ -24,16 +24,16 @@ static void Part1()
     {
         total += ScoreLookup[line];
     }
-    Console.WriteLine($"Part 1: {total}");
 
-    sw.Stop();
-    System.Diagnostics.Debug.WriteLine($"Part 1: {sw.Elapsed}");
+    var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
+    Console.WriteLine($"Part 1: {total}");
+    System.Diagnostics.Debug.WriteLine($"Part 1: {elapsedTime}");
 }
 
 static void Part2()
 {
     var input = File.ReadAllLines(@".\input.txt");
-    var sw = System.Diagnostics.Stopwatch.StartNew();
+    var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
     var ScoreLookup = new Dictionary<string, int>()
     {
@@ -53,8 +53,8 @@ static void Part2()
     {
         total += ScoreLookup[line];
     }
-    Console.WriteLine($"Part 2: {total}");
 
-    sw.Stop();
-    System.Diagnostics.Debug.WriteLine($"Part 2: {sw.Elapsed}");
+    var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
+    Console.WriteLine($"Part 2: {total}");
+    System.Diagnostics.Debug.WriteLine($"Part 2: {elapsedTime}");
 }

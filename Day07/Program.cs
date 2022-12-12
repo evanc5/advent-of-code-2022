@@ -4,27 +4,27 @@ Part2();
 static void Part1()
 {
     var input = File.ReadAllLines(@".\input.txt").Skip(1);
-    var sw = System.Diagnostics.Stopwatch.StartNew();
+    var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
     var fileSystem = BuildFileSystem(input);
     var result = fileSystem.FlatDirectories.Where(d => d.Size <= 100000).Sum(d => d.Size);
-    Console.WriteLine($"Part 1: {result}");
 
-    sw.Stop();
-    System.Diagnostics.Debug.WriteLine($"Part 1: {sw.Elapsed}");
+    var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
+    Console.WriteLine($"Part 1: {result}");
+    System.Diagnostics.Debug.WriteLine($"Part 1: {elapsedTime}");
 }
 
 static void Part2()
 {
     var input = File.ReadAllLines(@".\input.txt").Skip(1);
-    var sw = System.Diagnostics.Stopwatch.StartNew();
+    var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
     var fileSystem = BuildFileSystem(input);
     var result = fileSystem.FlatDirectories.Where(d => d.Size >= fileSystem.SpaceToFree).Min(d => d.Size);
-    Console.WriteLine($"Part 2: {result}");
 
-    sw.Stop();
-    System.Diagnostics.Debug.WriteLine($"Part 2: {sw.Elapsed}");
+    var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
+    Console.WriteLine($"Part 2: {result}");
+    System.Diagnostics.Debug.WriteLine($"Part 2: {elapsedTime}");
 }
 
 static FileSystem BuildFileSystem(IEnumerable<string> input)
