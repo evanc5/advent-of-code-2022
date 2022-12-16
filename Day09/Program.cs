@@ -6,12 +6,12 @@ static void Part1()
     var input = File.ReadAllLines(@".\input.txt");
     var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
-    var rope = new RopeSimulator(2);
+    var ropeSim = new RopeSimulator(2);
     foreach (var line in input)
     {
-        rope.ProcessMove(line);
+        ropeSim.ProcessMove(line);
     }
-    var result = rope.Visited.Count;
+    var result = ropeSim.Visited.Count;
 
     var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
     Console.WriteLine($"Part 1: {result}");
@@ -23,11 +23,12 @@ static void Part2()
     var input = File.ReadAllLines(@".\input.txt");
     var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
-    var result = 0;
+    var ropeSim = new RopeSimulator(10);
     foreach (var line in input)
     {
-
+        ropeSim.ProcessMove(line);
     }
+    var result = ropeSim.Visited.Count;
 
     var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
     Console.WriteLine($"Part 2: {result}");
@@ -38,16 +39,7 @@ public class RopeSimulator
 {
     public Point<int>[] Rope { get; private set; }
 
-    public Point<int> Head
-    {
-        get { return Rope[0]; }
-        private set { Rope[0] = value; }
-    }
-    public Point<int> Tail
-    {
-        get { return Rope[Rope.Length - 1]; }
-        private set { Rope[Rope.Length - 1] = value; }
-    }
+    public Point<int> Tail => Rope[Rope.Length - 1];
 
     public HashSet<Point<int>> Visited { get; } = new HashSet<Point<int>>();
 
@@ -67,30 +59,35 @@ public class RopeSimulator
             switch (direction)
             {
                 case "U":
-                    Head = new Point<int>(Head.x, Head.y + 1);
+                    Rope[0] = new Point<int>(Rope[0].x, Rope[0].y + 1);
                     break;
                 case "D":
-                    Head = new Point<int>(Head.x, Head.y - 1);
+                    Rope[0] = new Point<int>(Rope[0].x, Rope[0].y - 1);
                     break;
                 case "L":
-                    Head = new Point<int>(Head.x - 1, Head.y);
+                    Rope[0] = new Point<int>(Rope[0].x - 1, Rope[0].y);
                     break;
                 case "R":
-                    Head = new Point<int>(Head.x + 1, Head.y);
+                    Rope[0] = new Point<int>(Rope[0].x + 1, Rope[0].y);
                     break;
             }
-            UpdateTail();
+            UpdateSegment(1);
             Visited.Add(Tail);
         }
     }
 
-    private void UpdateTail()
+    private void UpdateSegment(int i)
     {
-        var tx = Tail.x;
-        var ty = Tail.y;
+        if (i >= Rope.Length) return;
 
-        var dx = Head.x - tx;
-        var dy = Head.y - ty;
+        var hx = Rope[i - 1].x;
+        var hy = Rope[i - 1].y;
+
+        var tx = Rope[i].x;
+        var ty = Rope[i].y;
+
+        var dx = hx - tx;
+        var dy = hy - ty;
 
         var xDirection = Math.Sign(dx);
         var yDirection = Math.Sign(dy);
@@ -98,15 +95,15 @@ public class RopeSimulator
         var xAbs = Math.Abs(dx);
         var yAbs = Math.Abs(dy);
 
-        if (xAbs < 2 && yAbs < 2) return;
-
         if (xAbs >= 2 || yAbs >= 2)
         {
             tx += xDirection;
             ty += yDirection;
         }
 
-        Tail = new Point<int>(tx, ty);
+        Rope[i] = new Point<int>(tx, ty);
+
+        UpdateSegment(++i);
     }
 }
 
