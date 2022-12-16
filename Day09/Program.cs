@@ -6,12 +6,7 @@ static void Part1()
     var input = File.ReadAllLines(@".\input.txt");
     var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
-    var ropeSim = new RopeSimulator(2);
-    foreach (var line in input)
-    {
-        ropeSim.ProcessMove(line);
-    }
-    var result = ropeSim.Visited.Count;
+    var result = ProcessInput(input, 2);
 
     var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
     Console.WriteLine($"Part 1: {result}");
@@ -23,16 +18,21 @@ static void Part2()
     var input = File.ReadAllLines(@".\input.txt");
     var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
-    var ropeSim = new RopeSimulator(10);
-    foreach (var line in input)
-    {
-        ropeSim.ProcessMove(line);
-    }
-    var result = ropeSim.Visited.Count;
+    var result = ProcessInput(input, 10);
 
     var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
     Console.WriteLine($"Part 2: {result}");
     System.Diagnostics.Debug.WriteLine($"Part 2: {elapsedTime}");
+}
+
+static int ProcessInput(IEnumerable<string> input, int count)
+{
+    var ropeSim = new RopeSimulator(count);
+    foreach (var line in input)
+    {
+        ropeSim.ProcessMove(line);
+    }
+    return ropeSim.Visited.Count;
 }
 
 public class RopeSimulator
@@ -95,7 +95,7 @@ public class RopeSimulator
         var xAbs = Math.Abs(dx);
         var yAbs = Math.Abs(dy);
 
-        if (xAbs >= 2 || yAbs >= 2)
+        if (xAbs > 1 || yAbs > 1)
         {
             tx += xDirection;
             ty += yDirection;
