@@ -5,10 +5,10 @@ Part2();
 
 static void Part1()
 {
-    var input = File.ReadAllLines(@".\sample.txt");
+    var input = File.ReadAllLines(@".\input.txt");
     var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
-    var monkeys = new Monkey[4];
+    var monkeys = new Monkey[8];
     for (int i = 0; i < monkeys.Length; i++)
     {
         var lines = input.Skip(i * 7).Take(6);
@@ -25,10 +25,10 @@ static void Part1()
             monkey.ProcessTurn();
         }
     }
-    var result = monkeys.Select(m => m.InspectionCount).OrderDescending().Take(2);
+    var result = monkeys.Select(m => m.InspectionCount).OrderDescending().Take(2).Product();
 
     var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
-    Console.WriteLine($"Part 1: {string.Join(",", result)}");
+    Console.WriteLine($"Part 1: {result}");
     System.Diagnostics.Debug.WriteLine($"Part 1: {elapsedTime}");
 }
 
@@ -53,7 +53,7 @@ record class Monkey(int ID, IList<int> Inventory, string Operation, int Operatio
     private Monkey? _passMonkey;
     private Monkey? _failMonkey;
 
-    public int InspectionCount { get; set; } = 0;
+    public int InspectionCount { get; private set; } = 0;
 
     public Monkey(IEnumerable<string> lines) : this(0, new List<int>(), "", 0, 0, 0, 0)
     {
@@ -111,7 +111,6 @@ record class Monkey(int ID, IList<int> Inventory, string Operation, int Operatio
         foreach (var item in Inventory)
         {
             var itemValue = item;
-            itemValue /= 3;
             switch (Operation)
             {
                 case "+":
@@ -124,6 +123,7 @@ record class Monkey(int ID, IList<int> Inventory, string Operation, int Operatio
                     itemValue *= itemValue;
                     break;
             }
+            itemValue /= 3;
 
             if (itemValue % Test == 0)
             {
