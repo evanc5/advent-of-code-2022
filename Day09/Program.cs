@@ -42,7 +42,7 @@ public class Rope
 
     public Rope()
     {
-        Visited.Add(Head);
+        Visited.Add(Tail);
     }
 
     public void ProcessMove(string line)
@@ -68,22 +68,33 @@ public class Rope
                     break;
             }
             UpdateTail();
-            Visited.Add(Head);
             Visited.Add(Tail);
         }
     }
 
     private void UpdateTail()
     {
-        var dx = Head.x - Tail.x;
-        var dy = Head.y - Tail.y;
+        var tx = Tail.x;
+        var ty = Tail.y;
+
+        var dx = Head.x - tx;
+        var dy = Head.y - ty;
 
         var xDirection = Math.Sign(dx);
         var yDirection = Math.Sign(dy);
 
-        if (Math.Abs(dx) < 2 && Math.Abs(dy) < 2) return;
+        var xAbs = Math.Abs(dx);
+        var yAbs = Math.Abs(dy);
 
-        //determine where Tail needs to move
+        if (xAbs < 2 && yAbs < 2) return;
+
+        if (xAbs >= 2 || yAbs >= 2)
+        {
+            tx += xDirection;
+            ty += yDirection;
+        }
+
+        Tail = new Point<int>(tx, ty);
     }
 }
 
