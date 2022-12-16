@@ -5,19 +5,30 @@ Part2();
 
 static void Part1()
 {
-    var input = File.ReadAllLines(@".\input.txt");
+    var input = File.ReadAllLines(@".\sample.txt");
     var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
-    var result = 0;
-    var monkeys = new Monkey[7];
+    var monkeys = new Monkey[4];
     for (int i = 0; i < monkeys.Length; i++)
     {
         var lines = input.Skip(i * 7).Take(6);
         monkeys[i] = new Monkey(lines);
     }
+    foreach (var monkey in monkeys)
+    {
+        monkey.InitializeNeighbors(monkeys[monkey.Pass], monkeys[monkey.Fail]);
+    }
+    for (int i = 0; i < 20; i++)
+    {
+        foreach (var monkey in monkeys)
+        {
+            monkey.ProcessTurn();
+        }
+    }
+    var result = monkeys.Select(m => m.InspectionCount).OrderDescending().Take(2);
 
     var elapsedTime = System.Diagnostics.Stopwatch.GetElapsedTime(startTime);
-    Console.WriteLine($"Part 1: {result}");
+    Console.WriteLine($"Part 1: {string.Join(",", result)}");
     System.Diagnostics.Debug.WriteLine($"Part 1: {elapsedTime}");
 }
 
@@ -37,9 +48,14 @@ static void Part2()
     System.Diagnostics.Debug.WriteLine($"Part 2: {elapsedTime}");
 }
 
-record class Monkey(int ID, IList<int> Inventory, string Operation, int OperationAmount, string TestOperation, int TestAmount, int Pass, int Fail)
+record class Monkey(int ID, IList<int> Inventory, string Operation, int OperationAmount, int Test, int Pass, int Fail)
 {
-    public Monkey(IEnumerable<string> lines) : this(0, new List<int>(), "", 0, "", 0, 0, 0)
+    private Monkey? _passMonkey;
+    private Monkey? _failMonkey;
+
+    public int InspectionCount { get; set; } = 0;
+
+    public Monkey(IEnumerable<string> lines) : this(0, new List<int>(), "", 0, 0, 0, 0)
     {
         var currentLine = 0;
         foreach (var line in lines)
@@ -69,9 +85,7 @@ record class Monkey(int ID, IList<int> Inventory, string Operation, int Operatio
                     }
                     break;
                 case 3:
-                    var split = line.Trim().Split(' ');
-                    TestOperation = split[1];
-                    TestAmount = int.Parse(split[3]);
+                    Test = int.Parse(Regex.Matches(line, pattern).First().ValueSpan);
                     break;
                 case 4:
                     Pass = int.Parse(Regex.Matches(line, pattern).First().ValueSpan);
@@ -84,12 +98,55 @@ record class Monkey(int ID, IList<int> Inventory, string Operation, int Operatio
             currentLine++;
         }
     }
+
+    public void InitializeNeighbors(Monkey passMonkey, Monkey failMonkey)
+    {
+        _passMonkey = passMonkey;
+        _failMonkey = failMonkey;
+    }
+
+    public void ProcessTurn()
+    {
+        InspectionCount += Inventory.Count;
+        foreach (var item in Inventory)
+        {
+            var itemValue = item;
+            itemValue /= 3;
+            switch (Operation)
+            {
+                case "+":
+                    itemValue += OperationAmount;
+                    break;
+                case "*":
+                    itemValue *= OperationAmount;
+                    break;
+                case "**":
+                    itemValue *= itemValue;
+                    break;
+            }
+
+            if (itemValue % Test == 0)
+            {
+                _passMonkey?.Inventory.Add(itemValue);
+            }
+            else
+            {
+                _failMonkey?.Inventory.Add(itemValue);
+            }
+        }
+        Inventory.Clear();
+    }
 }
 
-enum OperationEnum
+public static class MathExtensions
 {
-    Add,
-    Subtract,
-    Multiply,
-    Divide
+    public static int Product(this IEnumerable<int> collection)
+    {
+        var product = 1;
+        foreach (var num in collection)
+        {
+            product *= num;
+        }
+        return product;
+    }
 }
