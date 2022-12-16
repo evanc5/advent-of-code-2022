@@ -6,7 +6,7 @@ static void Part1()
     var input = File.ReadAllLines(@".\input.txt");
     var startTime = System.Diagnostics.Stopwatch.GetTimestamp();
 
-    var rope = new Rope();
+    var rope = new RopeSimulator(2);
     foreach (var line in input)
     {
         rope.ProcessMove(line);
@@ -34,15 +34,27 @@ static void Part2()
     System.Diagnostics.Debug.WriteLine($"Part 2: {elapsedTime}");
 }
 
-public class Rope
+public class RopeSimulator
 {
-    public Point<int> Head { get; private set; } = new Point<int>(0, 0);
-    public Point<int> Tail { get; private set; } = new Point<int>(0, 0);
+    public Point<int>[] Rope { get; private set; }
+
+    public Point<int> Head
+    {
+        get { return Rope[0]; }
+        private set { Rope[0] = value; }
+    }
+    public Point<int> Tail
+    {
+        get { return Rope[Rope.Length - 1]; }
+        private set { Rope[Rope.Length - 1] = value; }
+    }
+
     public HashSet<Point<int>> Visited { get; } = new HashSet<Point<int>>();
 
-    public Rope()
+    public RopeSimulator(int count)
     {
-        Visited.Add(Tail);
+        Rope = new Point<int>[count];
+        Visited.Add(new Point<int>(0, 0));
     }
 
     public void ProcessMove(string line)
