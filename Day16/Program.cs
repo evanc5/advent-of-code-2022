@@ -44,7 +44,7 @@ static void Part2()
     System.Diagnostics.Debug.WriteLine($"Part 2: {elapsedTime}");
 }
 
-record class Pipe(string ID, int Flow, List<string> TunnelIDs, List<Pipe> Tunnels)
+record class Pipe(string ID, int Flow, List<string> TunnelIDs, List<Pipe> Tunnels, bool Open = false)
 {
     public Pipe(string line) : this("", 0, new List<string>(), new List<Pipe>())
     {
