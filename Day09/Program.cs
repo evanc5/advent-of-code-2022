@@ -37,7 +37,7 @@ static int ProcessInput(IEnumerable<string> input, int count)
 
 public class RopeSimulator
 {
-    public Point<int>[] Rope { get; private set; }
+    public Point<int>[] Rope { get; }
 
     public Point<int> Tail => Rope[Rope.Length - 1];
 
